@@ -1,7 +1,7 @@
 import 'dart:html';
 import 'component.dart';
 
-abstract class StatelessComponent extends Component {
+abstract class StatelessComponent extends Widget {
   @override
   Element build();
 

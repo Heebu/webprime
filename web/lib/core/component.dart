@@ -18,7 +18,7 @@
 
 import 'dart:html';
 
-abstract class Component {
+abstract class Widget {
   /// Stores the currently rendered element.
   Element? _element;
 
@@ -34,7 +34,24 @@ abstract class Component {
   /// Updates the DOM when state changes.
   void update() {
     final newElement = build();
-    _element?.replaceWith(newElement);
+    if (_element != null && _element!.parent != null) {
+      _element!.replaceWith(newElement); // ✅ Correctly replace old element
+    }
     _element = newElement;
   }
 }
+
+
+// abstract class Component {
+//   Element build();
+//
+//   void update() {
+//     final newElement = build();
+//     if (_element != null && _element!.parent != null) {
+//       _element!.replaceWith(newElement); // ✅ Correctly replace old element
+//     }
+//     _element = newElement;
+//   }
+//
+//   Element? _element;
+// }

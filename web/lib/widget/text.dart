@@ -1,21 +1,65 @@
 import 'dart:html';
 import '../core/component.dart';
 
-class Text extends Component {
+class Text extends Widget {
   final String data;
-  final String? style;
+  final TextStyle style;
+  final TextAlign textAlign;
 
-  Text(this.data, {this.style});
+  Text(this.data, {this.style = const TextStyle(), this.textAlign = TextAlign.left});
 
   @override
   Element build() {
-    final element = ParagraphElement()..text = data;
+    final textElement = ParagraphElement()..text = data;
 
-    // Apply styles only if provided
-    if (style != null && style!.isNotEmpty) {
-      element.style.cssText = '${element.style.cssText} $style';
+    // Apply styles
+    textElement.style
+      ..color = style.color
+      ..fontSize = '${style.fontSize}px'
+      ..fontWeight = style.fontWeight
+      ..fontFamily = style.fontFamily
+      ..textAlign = textAlign.cssValue
+      ..textDecoration = style.decoration
+      ..lineHeight = '${style.lineHeight}px';
+
+    return textElement;
+  }
+}
+
+// 📌 `TextStyle` Class for Custom Styling
+class TextStyle {
+  final String color;
+  final double fontSize;
+  final String fontWeight;
+  final String fontFamily;
+  final double lineHeight;
+  final String decoration;
+
+  const TextStyle({
+    this.color = 'black',
+    this.fontSize = 16,
+    this.fontWeight = 'normal',
+    this.fontFamily = 'Arial, sans-serif',
+    this.lineHeight = 1.5,
+    this.decoration = 'none',
+  });
+}
+
+// 📌 `TextAlign`
+enum TextAlign { left, center, right, justify }
+
+// 📌 Extension to Convert Enum to CSS Value
+extension TextAlignExtension on TextAlign {
+  String get cssValue {
+    switch (this) {
+      case TextAlign.center:
+        return 'center';
+      case TextAlign.right:
+        return 'right';
+      case TextAlign.justify:
+        return 'justify';
+      default:
+        return 'left';
     }
-
-    return element;
   }
 }

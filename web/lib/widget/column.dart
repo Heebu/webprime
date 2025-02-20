@@ -1,27 +1,49 @@
 import 'dart:html';
 import '../core/component.dart';
+import '../helper/alignment.dart';
 
-class Column extends Component {
-  final List<Component> children;
+class Column extends Widget {
+  final List<Widget> children;
+  final MainAxisAlignment mainAxisAlignment;
+  final CrossAxisAlignment crossAxisAlignment;
   final String? style;
+  final double gap;
+  final bool scrollable;
 
-  Column({required this.children, this.style});
+  Column({
+    required this.children,
+    this.mainAxisAlignment = MainAxisAlignment.start,
+    this.crossAxisAlignment = CrossAxisAlignment.start,
+    this.style,
+    this.gap = 0,
+    this.scrollable = false,
+  });
 
   @override
   Element build() {
     final column = DivElement()
       ..style.display = 'flex'
-      ..style.flexDirection = 'column';
+      ..style.flexDirection = 'column'
+      ..style.justifyContent = mainAxisAlignment.cssValue
+      ..style.alignItems = crossAxisAlignment.cssValue;
 
-    // If additional styles are provided, append them.
-    if (style != null && style!.isNotEmpty) {
-      column.style.cssText = '${column.style.cssText} $style';
+    if (scrollable) {
+      column.style.overflowY = 'auto';
+      column.style.maxHeight = '100vh';
     }
 
-    // Build and append each child component.
-    for (final child in children) {
-      column.append(child.build());
+    if (style != null) column.style.cssText! + style!;
+
+    for (var i = 0; i < children.length; i++) {
+      final childElement = children[i].build();
+      column.append(childElement);
+
+      if (gap > 0 && i < children.length - 1) {
+        column.append(DivElement()..style.height = '${gap}px');
+      }
     }
+
     return column;
   }
 }
+

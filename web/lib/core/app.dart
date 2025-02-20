@@ -1,7 +1,7 @@
 import 'dart:html'; // For Element and querying DOM
 import 'component.dart';
 
-void runApp(Component rootComponent,) {
+void runApp(Widget rootComponent,) {
   // Find the mount point in the HTML
   final mountPoint = document.getElementById('app')!;
 
