@@ -27,7 +27,6 @@ class BoxDecoration {
   }
 }
 
-// ✅ Corrected BorderRadius
 class BorderRadius {
   final double topLeft;
   final double topRight;
@@ -40,12 +39,6 @@ class BorderRadius {
         bottomLeft = radius,
         bottomRight = radius;
 
-  const BorderRadius.circular(double radius)
-      : topLeft = radius,
-        topRight = radius,
-        bottomLeft = radius,
-        bottomRight = radius;
-
   const BorderRadius.only({
     this.topLeft = 0,
     this.topRight = 0,
@@ -53,12 +46,19 @@ class BorderRadius {
     this.bottomRight = 0,
   });
 
+  const BorderRadius.circular(double radius)
+      : topLeft = radius,
+        topRight = radius,
+        bottomLeft = radius,
+        bottomRight = radius;
+
   static const BorderRadius zero = BorderRadius.all(0);
 
+  String get cssValue =>
+      '${topLeft}px ${topRight}px ${bottomRight}px ${bottomLeft}px';
+
   void applyToStyle(CssStyleDeclaration style) {
-    style.borderTopLeftRadius = '${topLeft}px';
-    style.borderTopRightRadius = '${topRight}px';
-    style.borderBottomLeftRadius = '${bottomLeft}px';
-    style.borderBottomRightRadius = '${bottomRight}px';
+    style.borderRadius = cssValue;
   }
 }
+

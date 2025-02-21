@@ -1,50 +1,48 @@
 import 'dart:html';
-import '../core/stateful_component.dart';
-import '../widget/container.dart';
-import '../widget/scaffold.dart';
-import '../widget/column.dart';
-import '../widget/text.dart';
-import '../widget/button.dart';
-import '../widget/row.dart';
-import '../helper/alignment.dart';
-import '../helper/edgeinsets.dart';
-import '../helper/box_decoration.dart';
-import '../assets/color.dart';
+import '../lib/core/stateful_component.dart';
+import '../lib/widget/container.dart';
+import '../lib/widget/scaffold.dart';
+import '../lib/widget/column.dart';
+import '../lib/widget/text.dart';
+import '../lib/widget/button.dart';
+import '../lib/widget/row.dart';
+import '../lib/widget/dropdown.dart';
+import '../lib/widget/appbar.dart';
+import '../lib/widget/image.dart';
+import '../lib/widget/listview.dart';
+import '../lib/helper/alignment.dart';
+import '../lib/helper/edgeinsets.dart';
+import '../lib/helper/box_decoration.dart';
+import '../lib/assets/color.dart';
+import '../lib/widget/textfield.dart';
+
 
 
 class CounterPage extends StatefulComponent {
+  int count = 0;
+
   @override
   State<StatefulComponent> createState() => _CounterState();
 }
 
 class _CounterState extends State<CounterPage> {
-  int count = 0;
 
   addCount(){
     setState((){
-      count++;
+     component.count++;
     });
   }
 
   subCount(){
     setState((){
-      count--;
+      component.count++;
     });
   }
 
   @override
   Element build() {
     return Scaffold(
-      appBar: Container(
-        height: 60,
-        decoration: BoxDecoration(
-          color: Colors.green.shade400,
-        ),
-        padding: EdgeInsets.all(10),
-        child: Text('Counter App', style: TextStyle(
-          color: Colors.red.shade400
-        )),
-      ),
+      appBar: AppBar(title: 'Hello '),
       body: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -52,7 +50,7 @@ class _CounterState extends State<CounterPage> {
           children: [
             Container(
               margin: EdgeInsets.all(20),
-              child: Text('Count: $count', style: TextStyle(
+              child: Text('Count: ${component.count}', style: TextStyle(
                 color: Colors.white,
               )),
             ),
@@ -71,8 +69,8 @@ class _CounterState extends State<CounterPage> {
                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 50),
                    textColor: Colors.white,
                    onPressed: () {
-                     addCount();
-                   },
+                       print(component.count.toString());
+                       addCount();}
                  ),
                  Button(
                    text: 'Decrement',
@@ -86,6 +84,30 @@ class _CounterState extends State<CounterPage> {
                ]
              ),
            ),
+            Container(
+              height: 200, width: 700,
+              child: Dropdown(items: ['Text1', 'Text2', 'Text3', 'Text4',], )
+            ),
+
+            Container(
+              height: 50,
+              width: 300,
+              child: TextField(
+                padding: EdgeInsets.all(10),
+                margin: EdgeInsets.all(10),
+                onChanged: (value) {
+                  print(value);
+                },
+              ),
+            ),
+            Container(
+              height: 250, width: 500,
+              decoration: BoxDecoration(color: Colors.orange.shade500),
+              child: ListView.builder(itemCount: 4, itemBuilder: (index) {
+                return
+                ImageWidget(src: 'https://thumbs.dreamstime.com/b/colorful-balloons-7643802.jpg', height: 50, width: 60);
+              }, )
+            ),
           ],
         ),
       ),

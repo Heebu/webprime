@@ -19,15 +19,16 @@ abstract class StatefulComponent extends Widget {
   }
 
   void setState(void Function() fn) {
-    fn(); // Apply state changes
-    update(); // Rebuild UI
+    fn();
+    update();
   }
 
+  @override
   void update() {
     if (_currentElement != null) {
       final newElement = build();
-      _currentElement!.replaceWith(newElement); // Replace old element
-      _currentElement = newElement;
+      _currentElement!.replaceWith(newElement);
+      _currentElement = newElement; // Update reference to new element
     }
   }
 }

@@ -1,9 +1,10 @@
 import 'dart:html';
 import '../core/component.dart';
 import '../helper/edgeinsets.dart';
+import 'appbar.dart';
 
 class Scaffold extends Widget {
-  final Widget? appBar;
+  final AppBar? appBar;
   final Widget body;
   final Widget? bottomBar;
   final String? backgroundColor;

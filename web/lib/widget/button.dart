@@ -1,82 +1,67 @@
 import 'dart:html';
-import '../core/stateful_component.dart';
+import '../core/component.dart';
 import '../helper/edgeinsets.dart';
-import '../helper/box_decoration.dart';
 
-class Button extends StatefulComponent {
+class Button extends Widget {
   final String text;
-  final String? backgroundColor;
-  final String? textColor;
+  final void Function()? onPressed;
+  final String backgroundColor;
+  final String textColor;
   final EdgeInsets padding;
   final EdgeInsets margin;
-  final BorderRadius borderRadius;
+  final double borderRadius;
   final String border;
-  final String hoverColor;
   final bool disabled;
-  final void Function()? onPressed;
+  final String hoverColor;
+  final String width;
+  final String height;
 
   Button({
     required this.text,
     this.onPressed,
     this.backgroundColor = 'blue',
     this.textColor = 'white',
-    this.padding = const EdgeInsets.all(12),
-    this.margin = const EdgeInsets.all(10),
-    this.borderRadius = const BorderRadius.all(5),
+    this.padding = const EdgeInsets.all(0),
+    this.margin = const EdgeInsets.all(0),
+    this.borderRadius = 5,
     this.border = 'none',
     this.disabled = false,
     this.hoverColor = 'darkblue',
+    this.width = 'auto',
+    this.height = 'auto',
   });
-
-  @override
-  State<Button> createState() => _ButtonState();
-}
-
-class _ButtonState extends State<Button> {
-  bool isPressed = false;
 
   @override
   Element build() {
     final button = ButtonElement()
-      ..text = component.text
-      ..style.backgroundColor = component.disabled ? 'gray' : (isPressed ? component.hoverColor : component.backgroundColor!)
-      ..style.color = component.textColor
-      ..style.border = component.border
-      ..style.cursor = component.disabled ? 'not-allowed' : 'pointer'
-      ..disabled = component.disabled;
-
-    // Apply padding and border radius
-    component.padding.applyToStyle(button.style);
-    component.margin.applyToStyle(button.style);
-    component.borderRadius.applyToStyle(button.style);
+      ..text = text
+      ..style.backgroundColor = disabled ? '#b0b0b0' : backgroundColor
+      ..style.color = textColor
+      ..style.padding = '${padding}px'
+      ..style.margin = '${margin}px'
+      ..style.borderRadius = '${borderRadius}px'
+      ..style.border = border
+      ..style.cursor = disabled ? 'not-allowed' : 'pointer'
+      ..style.width = width
+      ..style.height = height
+      ..disabled = disabled;
 
     // Add hover effect
     button.onMouseEnter.listen((_) {
-      if (!component.disabled) {
-        setState(() {
-          isPressed = true;
-        });
-      }
+      if (!disabled) button.style.backgroundColor = hoverColor;
     });
-
     button.onMouseLeave.listen((_) {
-      if (!component.disabled) {
-        setState(() {
-          isPressed = false;
-        });
-      }
+      if (!disabled) button.style.backgroundColor = backgroundColor;
     });
 
     // Handle click
-    if (component.onPressed != null) {
+    if (onPressed != null) {
       button.onClick.listen((_) {
-        setState(() {
-          component.onPressed!();
-        });
+        print('Button clicked!');
+        onPressed!();
       });
     }
 
     return button;
   }
 }
-
