@@ -70,7 +70,8 @@ class _CounterState extends State<CounterPage> {
                    textColor: Colors.white,
                    onPressed: () {
                        print(component.count.toString());
-                       addCount();}
+                       addCount();
+                   }
                  ),
                  Button(
                    text: 'Decrement',
